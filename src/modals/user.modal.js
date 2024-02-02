@@ -9,13 +9,13 @@ const userSchema = new Schema(
             min: 6,
             max: 200,
         },
+        imageUrl: {
+            type: String,
+        },
         isApproved: {
             type: Boolean,
         },
         rejectReason: {
-            type: String,
-        },
-        userKeyHash: {
             type: String,
         },
     },

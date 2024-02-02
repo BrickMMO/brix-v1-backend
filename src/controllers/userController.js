@@ -9,8 +9,8 @@ exports.addNewUser = async (request, response) => {
     const newUser = new User({
       userName,
       isApproved: false,
+      imageUrl: "",
       rejectReason: "",
-      userKeyHash: userName,
     });
     newUser.save();
     response.json({"message":"User Added Successfully", "userToken": newUser.userKeyHash});

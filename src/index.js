@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const AdminRoutes = require("./routes/adminRoutes");
 const TweetRoutes = require("./routes/tweetRoutes");
 const UserRoutes = require("./routes/userRoutes");
 require("dotenv").config();
@@ -17,6 +18,11 @@ app.use(express.json());
 app.get("/", (req, res) => {
     res.status(200).send("Hello I am Up!");
 })
+
+// use the controller 
+app.use('/admin', AdminRoutes);
+app.use('/tweets', TweetRoutes);
+app.use('/users', UserRoutes);
 
 // establishing the connection
 // before that run brew services start mongodb-community@7.0
@@ -36,7 +42,3 @@ mongoose
     .catch((err) => {
         console.log(err);
     });
-
-// use the controller 
-app.use('/tweets', TweetRoutes);
-app.use('/users', UserRoutes);
