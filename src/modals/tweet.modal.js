@@ -10,13 +10,17 @@ const tweetSchema = new Schema(
         tweetImage: {
             type: String,
         },
+        userId: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
         userName: {
             type: String,
-            ref: "Users",
             required: true,
         }
     },
     { timestamps: true }
 );
-const Tweet = mongoose.model("Tweets", tweetSchema);
-module.exports = Tweet;
+
+module.exports = mongoose.model("Tweet", tweetSchema);;

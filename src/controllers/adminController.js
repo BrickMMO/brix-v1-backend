@@ -36,7 +36,6 @@ exports.adminLogin = async (request, response) => {
 
     // create a token to share it to frontend
     const token = jwt.sign({ id: request.body._id }, process.env.TOKEN_SECRET);
-    console.log("token", token);
     response.status(200).json({
       token,
       message: "Login Successfull!",
