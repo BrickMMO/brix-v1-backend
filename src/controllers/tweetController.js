@@ -25,27 +25,28 @@ exports.addNewTweet = async (request, response) => {
       userName,
     });
 
+    let user;
     // if no then create a user
     if (!userAlreadyExists) {
-      const user = new Users({
+      user = new Users({
         userName,
         isApproved: false,
         imageUrl: "",
         rejectReason: "",
       });
-      user.save().then(() => {
-        // create a new tweet object with tweetcontnet, tweetimage, and username
-        // push it in the database
-        Tweet({
-          tweetContent,
-          tweetImage,
-          userId: user?._id,
-          userName,
-        }).save();
-        // return success message
-        response.status(200).json({ status: 200, message: "Tweet Added" });
-      });
+      user.save();
     }
+    user = userAlreadyExists;
+    // create a new tweet object with tweetcontnet, tweetimage, and username
+    // push it in the database
+    Tweet({
+      tweetContent,
+      tweetImage,
+      userId: user?._id,
+      userName,
+    }).save();
+    // return success message
+    response.status(200).json({ status: 200, message: "Tweet Added" });
   } catch (err) {
     response.status(400).json(err);
   }

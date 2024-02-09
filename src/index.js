@@ -11,7 +11,9 @@ const db_url = process.env.DB_URL;
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: "*",
+}));
 ///app.use(express.json());
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
