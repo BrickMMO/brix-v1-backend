@@ -5,14 +5,16 @@ const AdminRoutes = require("./routes/adminRoutes");
 const TweetRoutes = require("./routes/tweetRoutes");
 const UserRoutes = require("./routes/userRoutes");
 require("dotenv").config();
-
+const bodyParser = require('body-parser');
 const port = process.env.PORT || 5000;
 const db_url = process.env.DB_URL;
 
 const app = express();
 
 app.use(cors());
-app.use(express.json());
+///app.use(express.json());
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
 app.get("/", (req, res) => {
     res.status(200).send("Hello I am Up!");
