@@ -3,15 +3,14 @@ const Tweet = require("../modals/tweet.modal");
 const Users = require("../modals/user.modal");
 
 // controller to get all tweets
-exports.getAllTweets = (_, response) => {
+exports.getAllTweets = async (_, response) => {
   // the below function returns a promise.
   try {
-    Tweet.find()
-      .populate({ path: "userId", select: ["imageUrl", "userName"] })
-      .then((tweet) => response.status(200).json(tweet))
-      .catch((err) => response.status(500).json(err));
+    const tweets = await Tweet.find().populate({ path: "userId", select: ["imageUrl", "userName", "isApproved"] });
+
+    return response.status(200).json(tweets.filter((t) => t.userId.isApproved));
   } catch (err) {
-    response.status(400).json(err);
+    return response.status(400).json(err);
   }
 };
 
@@ -21,13 +20,12 @@ exports.addNewTweet = async (request, response) => {
     const { tweetContent, tweetImage, userName } = request.body;
 
     // check if the username exisit in the user database
-    const userAlreadyExists = await Users.findOne({
+    let user = await Users.findOne({
       userName,
     });
 
-    let user;
     // if no then create a user
-    if (!userAlreadyExists) {
+    if (!user) {
       user = new Users({
         userName,
         isApproved: false,
@@ -36,18 +34,20 @@ exports.addNewTweet = async (request, response) => {
       });
       user.save();
     }
-    user = userAlreadyExists;
+
     // create a new tweet object with tweetcontnet, tweetimage, and username
     // push it in the database
-    Tweet({
+    const tweet = new Tweet({
       tweetContent,
       tweetImage,
       userId: user?._id,
       userName,
-    }).save();
+    });
+
+    tweet.save();
     // return success message
-    response.status(200).json({ status: 200, message: "Tweet Added" });
+    return response.status(200).json({ status: 200, message: "Tweet Added" });
   } catch (err) {
-    response.status(400).json(err);
+    return response.status(400).json(err);
   }
 };

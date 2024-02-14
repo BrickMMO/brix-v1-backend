@@ -13,8 +13,8 @@ exports.addNewUser = async (request, response) => {
       rejectReason: "",
     });
     newUser.save();
-    response.json({"message":"User Added Successfully", "userToken": newUser.userKeyHash});
+    return response.json({"message":"User Added Successfully", "userToken": newUser.userKeyHash});
   } catch (err) {
-    response.status(400).json(err);
+    return response.status(400).json(err);
   }
 };
