@@ -39,6 +39,7 @@ exports.adminLogin = async (request, response) => {
     const token = jwt.sign({ id: request.body._id }, process.env.TOKEN_SECRET);
     return response.status(200).json({
       token,
+      data: admin,
       message: "Login Successfull!",
     });
   } catch (err) {

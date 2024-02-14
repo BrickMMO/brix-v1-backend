@@ -8,7 +8,10 @@ exports.getAllTweets = async (_, response) => {
   try {
     const tweets = await Tweet.find().populate({ path: "userId", select: ["imageUrl", "userName", "isApproved"] });
 
-    return response.status(200).json(tweets.filter((t) => t.userId.isApproved));
+    return response.status(200).json({
+      message: "Tweets Fetched Successfully!",
+      data: tweets.filter((t) => t.userId.isApproved)
+    });
   } catch (err) {
     return response.status(400).json(err);
   }
