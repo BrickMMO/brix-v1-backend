@@ -13,6 +13,35 @@ exports.getAllUsers = async (request, response) => {
   }
 };
 
+exports.getUserDetailsById = async (request, response) => {
+  // get userId from query params
+  const { userId } = request.params;
+  try {
+    // check if the user id is present in the query params
+    if (!userId) {
+      return response.status(400).json({
+        message: "Please specify the user you want to get the tweets",
+      });
+    }
+
+    // check if the user exist in the database
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return response.status(400).json({
+        message: "No User found!",
+      });
+    }
+
+    return response.status(200).json({
+      message: "User details fetched successfully",
+      data: user,
+    });
+  } catch (err) {
+    return response.status(500).json(err);
+  }
+};
+
 exports.addNewUser = async (request, response) => {
   try {
     // destructor the request body here.
